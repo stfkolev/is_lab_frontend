@@ -5,13 +5,13 @@ import { Layout } from 'antd';
 
 const { Header } = Layout;
 
-export default function Navigation() {
+export default function Navigation(props) {
 	const router = useRouter();
 
 	return (
 		<Header>
-			<Menu theme='dark' mode='horizontal' defaultSelectedKeys={[router.pathname == ]}>
-				<Menu.Item key='home' active={router.pathname === } onSelect={() => {}}>
+			<Menu theme='dark' mode='horizontal'>
+				<Menu.Item key='home'>
 					<Link href='/'>Home</Link>
 				</Menu.Item>
 				<Menu.Item key='authors'>
