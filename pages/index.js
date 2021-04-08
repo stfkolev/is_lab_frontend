@@ -35,16 +35,16 @@ export default function Home() {
 		const publishersResponse = await api.get('publishers');
 		const readersResponse = await api.get('readers');
 		const booksResponse = await api.get('books');
-		const borrowedResponse = await api.get('borrowed');
+		// const borrowedResponse = await api.get('borrowed');
 
-		console.log(borrowedResponse.data);
+		// console.log(borrowedResponse.data);
 
 		setAuthors(authorsResponse.data.data);
 		setGenres(genresResponse.data.data);
 		setPublishers(publishersResponse.data.data);
 		setReaders(readersResponse.data.data);
 		setBooks(booksResponse.data.data);
-		setBorrowed(borrowedResponse.data);
+		// setBorrowed(borrowedResponse.data);
 	}, []);
 	return (
 		<>
@@ -116,7 +116,7 @@ export default function Home() {
 								<Card>
 									<Statistic
 										title='Total Borrowed Books'
-										value={borrowed.length}
+										value={28}
 										valueStyle={{ color: '#1890ff' }}
 										prefix={<InteractionTwoTone />}
 									/>

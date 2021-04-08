@@ -16,8 +16,10 @@ const { Content } = Layout;
 
 const AuthorsComponent = () => {
 	const api = new APIRequest('http://localhost:8000');
+
 	const [authors, setAuthors] = useState([]);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
 	const [visible, setVisible] = useState(false);
 	const [loading, setLoading] = useState(false);
 
