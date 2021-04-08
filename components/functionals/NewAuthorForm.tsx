@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Form, Input } from 'antd';
 
 interface Values {
@@ -19,22 +19,32 @@ const NewAuthorForm: React.FC<NewAuthorFormProps> = ({
 	onCancel,
 }) => {
 	const [form] = Form.useForm();
+	const [confirmLoading, setConfirmLoading] = useState(false);
+
 	return (
 		<Modal
 			visible={visible}
 			title='Create a new author'
 			okText='Create'
 			cancelText='Cancel'
+			confirmLoading={confirmLoading}
 			onCancel={onCancel}
 			onOk={() => {
 				form
 					.validateFields()
 					.then((values) => {
 						form.resetFields();
+
 						onCreate(values);
+						setConfirmLoading(true);
+
+						setTimeout(() => {
+							setConfirmLoading(false);
+						}, 2000);
 					})
 					.catch((info) => {
 						console.log('Validation Failed:', info);
+						setConfirmLoading(false);
 					});
 			}}>
 			<Form

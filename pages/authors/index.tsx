@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
-import { Layout, Table, Button, PageHeader } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Layout, Table, Button, PageHeader, Popconfirm } from 'antd';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import Navigation from '../../components/Navigation.tsx';
 import FooterLine from '../../components/FooterLine.tsx';
@@ -19,6 +19,7 @@ const AuthorsComponent = () => {
 	const [authors, setAuthors] = useState([]);
 	const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 	const [visible, setVisible] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	/*! Table Columns */
 	const columns = [
@@ -73,15 +74,44 @@ const AuthorsComponent = () => {
 					subTitle='All about authors'
 					extra={[
 						<Button key='3'>Operation</Button>,
-						<Button
+						<Popconfirm
 							key='2'
-							type='danger'
-							disabled={selectedRowKeys.length == 0}
-							onClick={() => {
-								//TODO: Foreach key make a delete
-							}}>
-							Delete
-						</Button>,
+							placement='top'
+							title='Are you sure?'
+							onConfirm={() => {
+								setLoading(true);
+								const numberOfElements = selectedRowKeys.length;
+
+								Promise.all(
+									selectedRowKeys.map(async (item) => {
+										await api.delete('authors', item);
+									}),
+								).then(() => {
+									notify(
+										'success',
+										`Successfully deleted ${numberOfElements} elements`,
+										`You have successfully deleted ${numberOfElements} from the authors table`,
+									);
+
+									api.get('authors').then((response) => {
+										setAuthors(response.data.data);
+									});
+
+									setLoading(false);
+									setSelectedRowKeys([]);
+								});
+							}}
+							okText='Yes'
+							cancelText='No'>
+							<Button
+								key='2'
+								type='danger'
+								disabled={selectedRowKeys.length == 0}
+								loading={loading}>
+								<DeleteOutlined />
+								Delete
+							</Button>
+						</Popconfirm>,
 						<Button
 							key='1'
 							type='primary'
